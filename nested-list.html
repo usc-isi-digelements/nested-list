@@ -33,6 +33,7 @@ A Polymer Element showing a list of compressed single-result elements.
 
       .header {
         color: var(--secondary-text-color);
+        font-size: 14px;
         font-weight: 500;
         margin-top: 10px;
       }
@@ -58,7 +59,7 @@ A Polymer Element showing a list of compressed single-result elements.
         page-size="[[pageSize]]"
         source-exclude="[]"
         source-include="[[sourceInclude]]"
-        transform-config="[[searchFields]]"
+        transform-config="[[_createConfig(extractionId, searchFields)]]"
         transform-function="[[transformQueryResults]]"
         error="{{error}}"
         loading="{{loading}}"
@@ -74,6 +75,8 @@ A Polymer Element showing a list of compressed single-result elements.
             compressed
             icon="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, iconProperty)]]"
             link="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, linkProperty)]]"
+            name="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, nameProperty)]]"
+            result-id="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, idProperty)]]"
             style-class="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, styleClassProperty)]]"
             text="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, textProperty)]]"
             type="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, typeProperty)]]"
@@ -334,6 +337,17 @@ A Polymer Element showing a list of compressed single-result elements.
         },
 
         /**
+         * (Required)
+         *
+         * The extraction ID for the elasticsearch query results transform function.
+         *
+         * @type {String}
+         */
+        extractionId: {
+          type: String
+        },
+
+        /**
          * (Optional)
          *
          * The extraction name to show.
@@ -388,6 +402,19 @@ A Polymer Element showing a list of compressed single-result elements.
         /**
          * (Optional)
          *
+         * The ID property in the result objects.
+         *
+         * @type {String}
+         * @default 'id'
+         */
+        idProperty: {
+          type: String,
+          value: 'id'
+        },
+
+        /**
+         * (Optional)
+         *
          * The link property in the result objects.
          *
          * @type {String}
@@ -410,6 +437,19 @@ A Polymer Element showing a list of compressed single-result elements.
           notify: true,
           type: Boolean,
           value: false
+        },
+
+        /**
+         * (Optional)
+         *
+         * The name property in the result objects.
+         *
+         * @type {String}
+         * @default 'name'
+         */
+        nameProperty: {
+          type: String,
+          value: 'name'
         },
 
         /**
@@ -595,6 +635,21 @@ A Polymer Element showing a list of compressed single-result elements.
       },
 
       /**
+       * Returns the config for the elasticsearch query results transform function.
+       *
+       * @param {String} extractionId
+       * @param {Array} searchFields
+       * @return {Object}
+       * @private
+       */
+      _createConfig: function(extractionId, searchFields) {
+        return extractionId && searchFields ? {
+          extractionId: extractionId,
+          searchFields: searchFields
+        } : undefined;
+      },
+
+      /**
        * Returns the header for the nested list.
        *
        * @param {String} extractionName
@@ -605,11 +660,13 @@ A Polymer Element showing a list of compressed single-result elements.
        * @private
        */
       _createHeader: function(extractionName, totalShown, totalCount, loading) {
-        // Use regex replace to add commas to count.
-        var totalCountString = totalCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        if(totalShown < totalCount) {
-          var totalShownString = totalShown.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-          return totalShownString + ' of ' + totalCountString + ' ' + extractionName;
+        if(totalCount) {
+          // Use regex replace to add commas to count.
+          var totalCountString = totalCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+          if(totalShown < totalCount) {
+            var totalShownString = totalShown.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            return totalShownString + ' of ' + totalCountString + ' ' + extractionName;
+          }
         }
         return loading ? ('Loading ' + extractionName + '...') : (totalCountString + ' ' + extractionName);
       },
