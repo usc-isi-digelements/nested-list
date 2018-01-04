@@ -81,6 +81,7 @@ A Polymer Element showing a list of compressed single-result elements.
             text="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, textProperty)]]"
             type="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, typeProperty)]]"
             header-extractions="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, headerExtractionsProperty)]]"
+            hide-confidences="[[hideConfidences]]"
             extraction-data-property="[[extractionDataProperty]]"
             extraction-data-classifications-property="[[extractionDataClassificationsProperty]]"
             extraction-data-highlight-property="[[extractionDataHighlightProperty]]"
@@ -384,6 +385,19 @@ A Polymer Element showing a list of compressed single-result elements.
         headerExtractionsProperty: {
           type: String,
           value: 'headerExtractions'
+        },
+
+        /**
+         * (Optional)
+         *
+         * Whether to hide the confidences.
+         *
+         * @type {Boolean}
+         * @default false
+         */
+        hideConfidences: {
+          type: Boolean,
+          value: false
         },
 
         /**
