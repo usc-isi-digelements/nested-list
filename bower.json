@@ -1,7 +1,7 @@
 {
   "name": "nested-list",
   "description": "A Polymer Element showing a list of compressed single-result elements.",
-  "version": "2.1.4",
+  "version": "2.2.0",
   "authors": ["Next Century Corporation"],
   "license": "Apache-2.0",
   "keywords": [
@@ -16,7 +16,7 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.2",
-    "build-and-run-query": "DigElements/build-and-run-query#2.3.0",
+    "build-and-run-query": "DigElements/build-and-run-query#2.5.0",
     "single-result": "DigElements/single-result#2.4.7"
   },
   "devDependencies": {
