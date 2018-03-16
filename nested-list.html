@@ -80,6 +80,7 @@ A Polymer Element showing a list of compressed single-result elements.
             text="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, textProperty)]]"
             type="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, typeProperty)]]"
             header-extractions="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, headerExtractionsProperty)]]"
+            hide-cached-page="[[hideCachedPage]]"
             hide-confidences="[[hideConfidences]]"
             extraction-data-property="[[extractionDataProperty]]"
             extraction-data-classifications-property="[[extractionDataClassificationsProperty]]"
@@ -389,6 +390,19 @@ A Polymer Element showing a list of compressed single-result elements.
         /**
          * (Optional)
          *
+         * Whether to hide the cached page.
+         *
+         * @type {Boolean}
+         * @default false
+         */
+        hideCachedPage: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * (Optional)
+         *
          * Whether to hide the confidences.
          *
          * @type {Boolean}
@@ -527,9 +541,9 @@ A Polymer Element showing a list of compressed single-result elements.
          */
         showProvenances: {
           notify: true,
-          type: Object,
+          type: Array,
           value: function() {
-            return {};
+            return [];
           }
         },
 
