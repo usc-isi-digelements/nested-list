@@ -1,24 +1,19 @@
 {
   "name": "nested-list",
-  "description": "A Polymer Element showing a list of compressed single-result elements.",
-  "version": "2.3.4",
+  "description":
+    "A Polymer Element showing a list of compressed single-result elements.",
+  "version": "2.3.5",
   "authors": ["Next Century Corporation"],
   "license": "Apache-2.0",
-  "keywords": [
-    "web-component",
-    "polymer"
-  ],
+  "keywords": ["web-component", "polymer"],
   "main": "nested-list.html",
   "homepage": "https://github.com/usc-isi-digelements/nested-list/",
-  "ignore": [
-    "/.*",
-    "/test/"
-  ],
+  "ignore": ["/.*", "/test/"],
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.2",
-    "build-and-run-query": "usc-isi-digelements/build-and-run-query#2.5.1",
+    "build-and-run-query": "usc-isi-digelements/build-and-run-query#^2.5.1",
     "paper-styles": "PolymerElements/paper-styles#^2.0.0",
-    "single-result": "usc-isi-digelements/single-result#2.5.3"
+    "single-result": "usc-isi-digelements/single-result#^2.5.3"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^2.0.0",
