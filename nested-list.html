@@ -72,7 +72,6 @@ A Polymer Element showing a list of compressed single-result elements.
       <template is="dom-if" if="[[!loading]]">
         <template is="dom-repeat" items="[[extractionData]]" as="extraction">
           <single-result
-            compressed
             icon="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, iconProperty)]]"
             link="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, linkProperty)]]"
             name="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, nameProperty)]]"
@@ -105,628 +104,648 @@ A Polymer Element showing a list of compressed single-result elements.
 
   <script>
   (function() {
-    'use strict';
+  'use strict';
 
-    Polymer({
-      is: 'nested-list',
+  Polymer({
+    is: 'nested-list',
 
-      properties: {
-        /**
-         * (Required)
-         *
-         * The elasticsearch client object for the elasticsearch query.
-         *
-         * @type {Object}
-         */
-        client: {
-          type: Object
-        },
+    properties: {
+      /**
+       * (Required)
+       *
+       * The elasticsearch client object for the elasticsearch query.
+       *
+       * @type {Object}
+       */
+      client: {
+        type: Object
+      },
 
-        /**
-         * (Required)
-         *
-         * The ID field for the elasticsearch query.
-         *
-         * @type {String}
-         */
-        idField: {
-          type: String
-        },
+      /**
+       * (Required)
+       *
+       * The ID field for the elasticsearch query.
+       *
+       * @type {String}
+       */
+      idField: {
+        type: String
+      },
 
-        /**
-         * (Required)
-         *
-         * The elasticsearch index name for the elasticsearch query.
-         *
-         * @type {String}
-         */
-        indexName: {
-          type: String
-        },
+      /**
+       * (Required)
+       *
+       * The elasticsearch index name for the elasticsearch query.
+       *
+       * @type {String}
+       */
+      indexName: {
+        type: String
+      },
 
-        /**
-         * (Required)
-         *
-         * The elasticsearch index types for the elasticsearch query.
-         *
-         * @type {Array}
-         */
-        indexTypes: {
-          type: Array
-        },
+      /**
+       * (Required)
+       *
+       * The elasticsearch index types for the elasticsearch query.
+       *
+       * @type {Array}
+       */
+      indexTypes: {
+        type: Array
+      },
 
-        /**
-         * (Output)
-         *
-         * The elasticsearch query error.
-         *
-         * @type {Object}
-         */
-        error: {
-          notify: true,
-          type: Object
-        },
+      /**
+       * (Output)
+       *
+       * The elasticsearch query error.
+       *
+       * @type {Object}
+       */
+      error: {
+        notify: true,
+        type: Object
+      },
 
-        /**
-         * (Required)
-         *
-         * The list of extraction data objects to show.
-         *
-         * @type {Array}
-         * @default []
-         */
-        extractionData: {
-          type: Array,
-          value: function() {
-            return [];
-          }
-        },
-
-        /**
-         * (Optional)
-         *
-         * The data property in the extraction objects that is a list of extractions.
-         *
-         * @type {String}
-         * @default 'data'
-         */
-        extractionDataProperty: {
-          type: String,
-          value: 'data'
-        },
-
-        /**
-         * (Optional)
-         *
-         * The property for the classifications of each item in the extraction data.
-         *
-         * @type {String}
-         * @default 'classifications'
-         */
-        extractionDataClassificationsProperty: {
-          type: String,
-          value: 'classifications'
-        },
-
-        /**
-         * (Optional)
-         *
-         * The confidence property in the data objects from the extraction objects.
-         *
-         * @type {String}
-         * @default 'confidence'
-         */
-        extractionDataConfidenceProperty: {
-          type: String,
-          value: 'confidence'
-        },
-
-        /**
-         * (Optional)
-         *
-         * The highlight property in the data objects from the extraction objects on whether to highlight the background of the extraction.
-         *
-         * @type {String}
-         * @default 'highlight'
-         */
-        extractionDataHighlightProperty: {
-          type: String,
-          value: 'highlight'
-        },
-
-        /**
-         * (Optional)
-         *
-         * The icon property in the data objects from the extraction objects.
-         *
-         * @type {String}
-         * @default 'icon'
-         */
-        extractionDataIconProperty: {
-          type: String,
-          value: 'icon'
-        },
-
-        /**
-         * (Optional)
-         *
-         * The ID property in the data objects from the extraction objects.
-         *
-         * @type {String}
-         * @default 'id'
-         */
-        extractionDataIdProperty: {
-          type: String,
-          value: 'id'
-        },
-
-        /**
-         * (Optional)
-         *
-         * The link property in the data objects from the extraction objects.
-         *
-         * @type {String}
-         * @default 'link'
-         */
-        extractionDataLinkProperty: {
-          type: String,
-          value: 'link'
-        },
-
-        /**
-         * (Optional)
-         *
-         * The provenances property in the data objects from the extraction objects.
-         *
-         * @type {String}
-         * @default 'provenances'
-         */
-        extractionDataProvenancesProperty: {
-          type: String,
-          value: 'provenances'
-        },
-
-        /**
-         * (Optional)
-         *
-         * The style class property in the data objects from the extraction objects.
-         *
-         * @type {String}
-         * @default 'styleClass'
-         */
-        extractionDataStyleClassProperty: {
-          type: String,
-          value: 'styleClass'
-        },
-
-        /**
-         * (Optional)
-         *
-         * The text property in the data objects from the extraction objects.
-         *
-         * @type {String}
-         * @default 'text'
-         */
-        extractionDataTextProperty: {
-          type: String,
-          value: 'text'
-        },
-
-        /**
-         * (Optional)
-         *
-         * The type property in the data objects from the extraction objects.
-         *
-         * @type {String}
-         * @default 'type'
-         */
-        extractionDataTypeProperty: {
-          type: String,
-          value: 'type'
-        },
-
-        /**
-         * (Optional)
-         *
-         * The width property in the data objects from the extraction objects.
-         *
-         * @type {String}
-         * @default 'width'
-         */
-        extractionDataWidthProperty: {
-          type: String,
-          value: 'width'
-        },
-
-        /**
-         * (Required)
-         *
-         * The extraction ID for the elasticsearch query results transform function.
-         *
-         * @type {String}
-         */
-        extractionId: {
-          type: String
-        },
-
-        /**
-         * (Optional)
-         *
-         * The extraction name to show.
-         *
-         * @type {String}
-         * @default 'Data'
-         */
-        extractionName: {
-          type: String,
-          value: 'Data'
-        },
-
-        /**
-         * (Optional)
-         *
-         * The name property in the extraction objects.
-         *
-         * @type {String}
-         * @default 'name'
-         */
-        extractionNameProperty: {
-          type: String,
-          value: 'name'
-        },
-
-        /**
-         * (Optional)
-         *
-         * The header extractions property in the result objects that is a list of extraction objects to show in the result header.
-         *
-         * @type {String}
-         * @default 'headerExtractions'
-         */
-        headerExtractionsProperty: {
-          type: String,
-          value: 'headerExtractions'
-        },
-
-        /**
-         * (Optional)
-         *
-         * Whether to hide the cached page.
-         *
-         * @type {Boolean}
-         * @default false
-         */
-        hideCachedPage: {
-          type: Boolean,
-          value: false
-        },
-
-        /**
-         * (Optional)
-         *
-         * Whether to hide the confidences.
-         *
-         * @type {Boolean}
-         * @default false
-         */
-        hideConfidences: {
-          type: Boolean,
-          value: false
-        },
-
-        /**
-         * (Optional)
-         *
-         * The icon property in the result objects.
-         *
-         * @type {String}
-         * @default 'icon'
-         */
-        iconProperty: {
-          type: String,
-          value: 'icon'
-        },
-
-        /**
-         * (Optional)
-         *
-         * The ID property in the result objects.
-         *
-         * @type {String}
-         * @default 'id'
-         */
-        idProperty: {
-          type: String,
-          value: 'id'
-        },
-
-        /**
-         * (Optional)
-         *
-         * The link property in the result objects.
-         *
-         * @type {String}
-         * @default 'link'
-         */
-        linkProperty: {
-          type: String,
-          value: 'link'
-        },
-
-        /**
-         * (Output)
-         *
-         * Whether an elasticsearch query is running.
-         *
-         * @type {Boolean}
-         * @default false
-         */
-        loading: {
-          notify: true,
-          type: Boolean,
-          value: false
-        },
-
-        /**
-         * (Optional)
-         *
-         * The name property in the result objects.
-         *
-         * @type {String}
-         * @default 'name'
-         */
-        nameProperty: {
-          type: String,
-          value: 'name'
-        },
-
-        /**
-         * (Optional)
-         *
-         * Whether to open a link in a new tab.
-         *
-         * @type {Boolean}
-         * @default false
-         */
-        newTab: {
-          type: Boolean,
-          value: false
-        },
-
-        /**
-         * (Optional|Output)
-         *
-         * The current page.
-         *
-         * @type {Number}
-         * @default 1
-         */
-        page: {
-          notify: true,
-          type: Number,
-          value: 1
-        },
-
-        /**
-         * (Optional)
-         *
-         * The page size.
-         *
-         * @type {Number}
-         * @default 5
-         */
-        pageSize: {
-          type: Number,
-          value: 5
-        },
-
-        /**
-         * (Required)
-         *
-         * The search fields config object for the elasticsearch query results transform function.
-         *
-         * @type {Object}
-         */
-        searchFields: {
-          type: Object
-        },
-
-        /**
-         * (Output)
-         *
-         * The provenance data and result ID to show in the confidence/provenance dialog.  An object containing {Array} data and {Number|String} id.
-         *
-         * @type {Object}
-         * @default {}
-         * @private
-         */
-        showProvenances: {
-          notify: true,
-          type: Array,
-          value: function() {
-            return [];
-          }
-        },
-
-        /**
-         * (Optional)
-         *
-         * The source fields to include in the results for the elasticsearch query.
-         *
-         * @type {Array}
-         * @default []
-         */
-        sourceInclude: {
-          type: Array,
-          value: function() {
-            return [];
-          }
-        },
-
-        /**
-         * (Optional)
-         *
-         * The style class property in the result objects.
-         *
-         * @type {String}
-         * @default 'styleClass'
-         */
-        styleClassProperty: {
-          type: String,
-          value: 'styleClass'
-        },
-
-        /**
-         * (Optional)
-         *
-         * The tag manager.
-         *
-         * @type {Object}
-         */
-        tagManager: {
-          type: Object
-        },
-
-        /**
-         * (Optional)
-         *
-         * The text property in the result objects.
-         *
-         * @type {String}
-         * @default 'text'
-         */
-        textProperty: {
-          type: String,
-          value: 'text'
-        },
-
-        /**
-         * (Required)
-         *
-         * The transform function for the elasticsearch query results.
-         *
-         * @type {Object}
-         */
-        transformQueryResults: {
-          type: Object
-        },
-
-        /**
-         * (Optional)
-         *
-         * The type property in the result objects.
-         *
-         * @type {String}
-         * @default 'type'
-         */
-        typeProperty: {
-          type: String,
-          value: 'type'
-        },
-
-        /**
-         * The list of result objects returned by the elasticsearch query results transform function to show in the list that are reset for each new page.
-         *
-         * @type {Array}
-         */
-        _queryResults: {
-          type: Array
-        },
-
-        /**
-         * The list of terms for the elasticsearch query.
-         *
-         * @type {Array}
-         */
-        _queryTerms: {
-          computed: '_createQueryTerms(extractionData, extractionDataIdProperty)',
-          type: Array
-        },
-
-        /**
-         * The list of extraction objects currently shown in the list.
-         *
-         * @type {Array}
-         */
-        _shownExtractions: {
-          type: Array
-        },
-
-        /**
-         * The total number of results for all pages.
-         *
-         * @type {Number}
-         */
-        _totalResults: {
-          type: Number
+      /**
+       * (Required)
+       *
+       * The list of extraction data objects to show.
+       *
+       * @type {Array}
+       * @default []
+       */
+      extractionData: {
+        type: Array,
+        value: function() {
+          return [];
         }
       },
 
       /**
-       * Returns the config for the elasticsearch query results transform function.
+       * (Optional)
        *
-       * @param {String} extractionId
-       * @param {Array} searchFields
-       * @return {Object}
-       * @private
+       * The data property in the extraction objects that is a list of extractions.
+       *
+       * @type {String}
+       * @default 'data'
        */
-      _createConfig: function(extractionId, searchFields) {
-        return extractionId && searchFields ? {
-          extractionId: extractionId,
-          searchFields: searchFields
-        } : undefined;
+      extractionDataProperty: {
+        type: String,
+        value: 'data'
       },
 
       /**
-       * Returns the header for the nested list.
+       * (Optional)
        *
-       * @param {String} extractionName
-       * @param {Number} totalShown
-       * @param {Number} totalCount
-       * @param {Boolean} loading
-       * @return {String}
+       * The property for the classifications of each item in the extraction data.
+       *
+       * @type {String}
+       * @default 'classifications'
+       */
+      extractionDataClassificationsProperty: {
+        type: String,
+        value: 'classifications'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The confidence property in the data objects from the extraction objects.
+       *
+       * @type {String}
+       * @default 'confidence'
+       */
+      extractionDataConfidenceProperty: {
+        type: String,
+        value: 'confidence'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The highlight property in the data objects from the extraction objects on whether to highlight the background of the extraction.
+       *
+       * @type {String}
+       * @default 'highlight'
+       */
+      extractionDataHighlightProperty: {
+        type: String,
+        value: 'highlight'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The icon property in the data objects from the extraction objects.
+       *
+       * @type {String}
+       * @default 'icon'
+       */
+      extractionDataIconProperty: {
+        type: String,
+        value: 'icon'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The ID property in the data objects from the extraction objects.
+       *
+       * @type {String}
+       * @default 'id'
+       */
+      extractionDataIdProperty: {
+        type: String,
+        value: 'id'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The link property in the data objects from the extraction objects.
+       *
+       * @type {String}
+       * @default 'link'
+       */
+      extractionDataLinkProperty: {
+        type: String,
+        value: 'link'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The provenances property in the data objects from the extraction objects.
+       *
+       * @type {String}
+       * @default 'provenances'
+       */
+      extractionDataProvenancesProperty: {
+        type: String,
+        value: 'provenances'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The style class property in the data objects from the extraction objects.
+       *
+       * @type {String}
+       * @default 'styleClass'
+       */
+      extractionDataStyleClassProperty: {
+        type: String,
+        value: 'styleClass'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The text property in the data objects from the extraction objects.
+       *
+       * @type {String}
+       * @default 'text'
+       */
+      extractionDataTextProperty: {
+        type: String,
+        value: 'text'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The type property in the data objects from the extraction objects.
+       *
+       * @type {String}
+       * @default 'type'
+       */
+      extractionDataTypeProperty: {
+        type: String,
+        value: 'type'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The width property in the data objects from the extraction objects.
+       *
+       * @type {String}
+       * @default 'width'
+       */
+      extractionDataWidthProperty: {
+        type: String,
+        value: 'width'
+      },
+
+      /**
+       * (Required)
+       *
+       * The extraction ID for the elasticsearch query results transform function.
+       *
+       * @type {String}
+       */
+      extractionId: {
+        type: String
+      },
+
+      /**
+       * (Optional)
+       *
+       * The extraction name to show.
+       *
+       * @type {String}
+       * @default 'Data'
+       */
+      extractionName: {
+        type: String,
+        value: 'Data'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The name property in the extraction objects.
+       *
+       * @type {String}
+       * @default 'name'
+       */
+      extractionNameProperty: {
+        type: String,
+        value: 'name'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The header extractions property in the result objects that is a list of extraction objects to show in the result header.
+       *
+       * @type {String}
+       * @default 'headerExtractions'
+       */
+      headerExtractionsProperty: {
+        type: String,
+        value: 'headerExtractions'
+      },
+
+      /**
+       * (Optional)
+       *
+       * Whether to hide the cached page.
+       *
+       * @type {Boolean}
+       * @default false
+       */
+      hideCachedPage: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * (Optional)
+       *
+       * Whether to hide the confidences.
+       *
+       * @type {Boolean}
+       * @default false
+       */
+      hideConfidences: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * (Optional)
+       *
+       * The icon property in the result objects.
+       *
+       * @type {String}
+       * @default 'icon'
+       */
+      iconProperty: {
+        type: String,
+        value: 'icon'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The ID property in the result objects.
+       *
+       * @type {String}
+       * @default 'id'
+       */
+      idProperty: {
+        type: String,
+        value: 'id'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The link property in the result objects.
+       *
+       * @type {String}
+       * @default 'link'
+       */
+      linkProperty: {
+        type: String,
+        value: 'link'
+      },
+
+      /**
+       * (Output)
+       *
+       * Whether an elasticsearch query is running.
+       *
+       * @type {Boolean}
+       * @default false
+       */
+      loading: {
+        notify: true,
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * (Optional)
+       *
+       * The name property in the result objects.
+       *
+       * @type {String}
+       * @default 'name'
+       */
+      nameProperty: {
+        type: String,
+        value: 'name'
+      },
+
+      /**
+       * (Optional)
+       *
+       * Whether to open a link in a new tab.
+       *
+       * @type {Boolean}
+       * @default false
+       */
+      newTab: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * (Optional|Output)
+       *
+       * The current page.
+       *
+       * @type {Number}
+       * @default 1
+       */
+      page: {
+        notify: true,
+        type: Number,
+        value: 1
+      },
+
+      /**
+       * (Optional)
+       *
+       * The page size.
+       *
+       * @type {Number}
+       * @default 5
+       */
+      pageSize: {
+        type: Number,
+        value: 5
+      },
+
+      /**
+       * (Required)
+       *
+       * The search fields config object for the elasticsearch query results transform function.
+       *
+       * @type {Object}
+       */
+      searchFields: {
+        type: Object
+      },
+
+      /**
+       * (Output)
+       *
+       * The provenance data and result ID to show in the confidence/provenance dialog.  An object containing {Array} data and {Number|String} id.
+       *
+       * @type {Object}
+       * @default {}
        * @private
        */
-      _createHeader: function(extractionName, totalShown, totalCount, loading) {
-        if(totalCount) {
-          // Use regex replace to add commas to count.
-          var totalCountString = totalCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-          if(totalShown < totalCount) {
-            var totalShownString = totalShown.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            return totalShownString + ' of ' + totalCountString + ' ' + extractionName;
-          }
+      showProvenances: {
+        notify: true,
+        type: Array,
+        value: function() {
+          return [];
         }
-        return loading ? ('Loading ' + extractionName + '...') : (totalCountString + ' ' + extractionName);
       },
 
       /**
-       * Returns the IDs for the extraction terms query using the given extraction data and ID property.
+       * (Optional)
        *
-       * @param {Object} extractionData
-       * @param {String} idProperty
-       * @return {Array}
-       * @private
+       * The source fields to include in the results for the elasticsearch query.
+       *
+       * @type {Array}
+       * @default []
        */
-      _createQueryTerms: function(extractionData, idProperty) {
-        return (extractionData || []).map(function(extraction) {
-          return extraction[idProperty];
-        });
+      sourceInclude: {
+        type: Array,
+        value: function() {
+          return [];
+        }
       },
 
       /**
-       * Returns the object in the given collection at the given property for the object mapped to the ID of the given extraction.
+       * (Optional)
        *
-       * @param {Object} collection
-       * @param {Object} extraction
-       * @param {String} idProperty
-       * @param {String} property
-       * @return {Object}
-       * @private
+       * The style class property in the result objects.
+       *
+       * @type {String}
+       * @default 'styleClass'
        */
-      _getPropertyFromCollection: function(collection, extraction, idProperty, property) {
-        return collection && extraction && extraction[idProperty] && collection[extraction[idProperty]] ? collection[extraction[idProperty]][property] : undefined;
+      styleClassProperty: {
+        type: String,
+        value: 'styleClass'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The tag manager.
+       *
+       * @type {Object}
+       */
+      tagManager: {
+        type: Object
+      },
+
+      /**
+       * (Optional)
+       *
+       * The text property in the result objects.
+       *
+       * @type {String}
+       * @default 'text'
+       */
+      textProperty: {
+        type: String,
+        value: 'text'
+      },
+
+      /**
+       * (Required)
+       *
+       * The transform function for the elasticsearch query results.
+       *
+       * @type {Object}
+       */
+      transformQueryResults: {
+        type: Object
+      },
+
+      /**
+       * (Optional)
+       *
+       * The type property in the result objects.
+       *
+       * @type {String}
+       * @default 'type'
+       */
+      typeProperty: {
+        type: String,
+        value: 'type'
+      },
+
+      /**
+       * The list of result objects returned by the elasticsearch query results transform function to show in the list that are reset for each new page.
+       *
+       * @type {Array}
+       */
+      _queryResults: {
+        type: Array
+      },
+
+      /**
+       * The list of terms for the elasticsearch query.
+       *
+       * @type {Array}
+       */
+      _queryTerms: {
+        computed: '_createQueryTerms(extractionData, extractionDataIdProperty)',
+        type: Array
+      },
+
+      /**
+       * The list of extraction objects currently shown in the list.
+       *
+       * @type {Array}
+       */
+      _shownExtractions: {
+        type: Array
+      },
+
+      /**
+       * The total number of results for all pages.
+       *
+       * @type {Number}
+       */
+      _totalResults: {
+        type: Number
       }
-    });
-  })();
-  </script>
+    },
+
+    /**
+     * Returns the config for the elasticsearch query results transform function.
+     *
+     * @param {String} extractionId
+     * @param {Array} searchFields
+     * @return {Object}
+     * @private
+     */
+    _createConfig: function(extractionId, searchFields) {
+      return extractionId && searchFields
+        ? {
+            extractionId: extractionId,
+            searchFields: searchFields
+          }
+        : undefined;
+    },
+
+    /**
+     * Returns the header for the nested list.
+     *
+     * @param {String} extractionName
+     * @param {Number} totalShown
+     * @param {Number} totalCount
+     * @param {Boolean} loading
+     * @return {String}
+     * @private
+     */
+    _createHeader: function(extractionName, totalShown, totalCount, loading) {
+      if (totalCount) {
+        // Use regex replace to add commas to count.
+        var totalCountString = totalCount
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        if (totalShown < totalCount) {
+          var totalShownString = totalShown
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+          return (
+            totalShownString + ' of ' + totalCountString + ' ' + extractionName
+          );
+        }
+      }
+      return loading
+        ? 'Loading ' + extractionName + '...'
+        : totalCountString + ' ' + extractionName;
+    },
+
+    /**
+     * Returns the IDs for the extraction terms query using the given extraction data and ID property.
+     *
+     * @param {Object} extractionData
+     * @param {String} idProperty
+     * @return {Array}
+     * @private
+     */
+    _createQueryTerms: function(extractionData, idProperty) {
+      return (extractionData || []).map(function(extraction) {
+        return extraction[idProperty];
+      });
+    },
+
+    /**
+     * Returns the object in the given collection at the given property for the object mapped to the ID of the given extraction.
+     *
+     * @param {Object} collection
+     * @param {Object} extraction
+     * @param {String} idProperty
+     * @param {String} property
+     * @return {Object}
+     * @private
+     */
+    _getPropertyFromCollection: function(
+      collection,
+      extraction,
+      idProperty,
+      property
+    ) {
+      return collection &&
+        extraction &&
+        extraction[idProperty] &&
+        collection[extraction[idProperty]]
+        ? collection[extraction[idProperty]][property]
+        : undefined;
+    }
+  });
+})();
+</script>
 </dom-module>
