@@ -21,6 +21,7 @@ limitations under the License.
 <link rel="import" href="../paper-material/paper-material.html">
 <link rel="import" href="../modal-icon/modal-icon.html">
 <link rel="import" href="../iron-collapse/iron-collapse.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
 
 <!--
 A Polymer Element showing a list of compressed single-result elements.
@@ -30,6 +31,8 @@ A Polymer Element showing a list of compressed single-result elements.
 
 <dom-module id="nested-list">
   <template>
+    <style include="iron-flex iron-flex-alignment iron-flex-factors"></style>
+    
     <style>
       :host {
         display: block;
@@ -70,8 +73,8 @@ A Polymer Element showing a list of compressed single-result elements.
         total="{{_totalResults}}">
       </build-and-run-query>
 
-      <div>
-        <div class="header">[[_createHeader(extractionName, _queryResults.length, _totalResults, loading)]]</div>
+      <div class="layout horizontal flex">
+        <div class="header layout vertical flex">[[_createHeader(extractionName, _queryResults.length, _totalResults, loading)]]</div>
 
         <modal-icon
           data-t_extractiondata$="[[extractionData]]"
