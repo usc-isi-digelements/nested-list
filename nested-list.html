@@ -18,6 +18,7 @@ limitations under the License.
 <link rel="import" href="../build-and-run-query/build-and-run-query.html">
 <link rel="import" href="../paper-styles/color.html">
 <link rel="import" href="../single-result/single-result.html">
+<link rel="import" href="../paper-material/paper-material.html">
 <link rel="import" href="../modal-icon/modal-icon.html">
 <link rel="import" href="../iron-collapse/iron-collapse.html">
 
@@ -69,15 +70,20 @@ A Polymer Element showing a list of compressed single-result elements.
         total="{{_totalResults}}">
       </build-and-run-query>
 
-      <div class="header layout vertical flex">[[_createHeader(extractionName, _queryResults.length, _totalResults, loading)]]</div>
+      <paper-material
+        class$="layout horizontal flex"
+        elevation="2">
+        <div class="header layout vertical flex">[[_createHeader(extractionName, _queryResults.length, _totalResults, loading)]]</div>
 
-      <modal-icon
-        data-t_extractiondata$="[[extractionData]]"
-        isopen$=""
-        openable
-        open="{{open}}"
-        on-click="toggleDetails">
-      </modal-icon>
+        <modal-icon
+          data-t_extractiondata$="[[extractionData]]"
+          isopen$=""
+          openable
+          open="{{open}}"
+          on-click="toggleDetails">
+        </modal-icon>
+
+      </paper-material>
 
       <template is="dom-if" if="[[!loading]]">
         <iron-collapse id="nestedList" opened="{{open}}">
