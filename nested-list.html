@@ -70,10 +70,8 @@ A Polymer Element showing a list of compressed single-result elements.
         total="{{_totalResults}}">
       </build-and-run-query>
 
-      <paper-material
-        class$="layout horizontal flex"
-        elevation="2">
-        <div class="header layout vertical flex">[[_createHeader(extractionName, _queryResults.length, _totalResults, loading)]]</div>
+      <div>
+        <div class="header">[[_createHeader(extractionName, _queryResults.length, _totalResults, loading)]]</div>
 
         <modal-icon
           data-t_extractiondata$="[[extractionData]]"
@@ -83,7 +81,7 @@ A Polymer Element showing a list of compressed single-result elements.
           on-click="toggleDetails">
         </modal-icon>
 
-      </paper-material>
+      </div>
 
       <template is="dom-if" if="[[!loading]]">
         <iron-collapse id="nestedList" opened="{{open}}">
