@@ -18,6 +18,8 @@ limitations under the License.
 <link rel="import" href="../build-and-run-query/build-and-run-query.html">
 <link rel="import" href="../paper-styles/color.html">
 <link rel="import" href="../single-result/single-result.html">
+<link rel="import" href="../modal-icon/modal-icon.html">
+<link rel="import" href="../iron-collapse/iron-collapse.html">
 
 <!--
 A Polymer Element showing a list of compressed single-result elements.
@@ -69,35 +71,45 @@ A Polymer Element showing a list of compressed single-result elements.
 
       <div class="header">[[_createHeader(extractionName, _queryResults.length, _totalResults, loading)]]</div>
 
+      <modal-icon
+        data-t_extractiondata$="[[extractionData]]"
+        isopen$=""
+        openable
+        open="{{open}}"
+        on-click="toggleDetails">
+      </modal-icon>
+
       <template is="dom-if" if="[[!loading]]">
-        <template is="dom-repeat" items="[[extractionData]]" as="extraction">
-          <single-result
-            icon="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, iconProperty)]]"
-            link="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, linkProperty)]]"
-            name="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, nameProperty)]]"
-            result-id="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, idProperty)]]"
-            style-class="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, styleClassProperty)]]"
-            text="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, textProperty)]]"
-            type="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, typeProperty)]]"
-            header-extractions="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, headerExtractionsProperty)]]"
-            hide-cached-page="[[hideCachedPage]]"
-            hide-confidences="[[hideConfidences]]"
-            extraction-data-property="[[extractionDataProperty]]"
-            extraction-data-classifications-property="[[extractionDataClassificationsProperty]]"
-            extraction-data-highlight-property="[[extractionDataHighlightProperty]]"
-            extraction-data-icon-property="[[extractionDataIconProperty]]"
-            extraction-data-id-property="[[extractionDataIdProperty]]"
-            extraction-data-link-property="[[extractionDataLinkProperty]]"
-            extraction-data-provenances-property="[[extractionDataProvenancesProperty]]"
-            extraction-data-style-class-property="[[extractionDataStyleClassProperty]]"
-            extraction-data-text-property="[[extractionDataTextProperty]]"
-            extraction-data-type-property="[[extractionDataTypeProperty]]"
-            extraction-data-width-property="[[extractionDataWidthProperty]]"
-            extraction-name-property="[[extractionNameProperty]]"
-            new-tab="[[newTab]]"
-            show-provenances="{{showProvenances}}">
-          </single-result>
-        </template>
+        <iron-collapse id="nestedList" opened="{{open}}">
+          <template is="dom-repeat" items="[[extractionData]]" as="extraction">
+            <single-result
+              icon="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, iconProperty)]]"
+              link="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, linkProperty)]]"
+              name="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, nameProperty)]]"
+              result-id="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, idProperty)]]"
+              style-class="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, styleClassProperty)]]"
+              text="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, textProperty)]]"
+              type="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, typeProperty)]]"
+              header-extractions="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, headerExtractionsProperty)]]"
+              hide-cached-page="[[hideCachedPage]]"
+              hide-confidences="[[hideConfidences]]"
+              extraction-data-property="[[extractionDataProperty]]"
+              extraction-data-classifications-property="[[extractionDataClassificationsProperty]]"
+              extraction-data-highlight-property="[[extractionDataHighlightProperty]]"
+              extraction-data-icon-property="[[extractionDataIconProperty]]"
+              extraction-data-id-property="[[extractionDataIdProperty]]"
+              extraction-data-link-property="[[extractionDataLinkProperty]]"
+              extraction-data-provenances-property="[[extractionDataProvenancesProperty]]"
+              extraction-data-style-class-property="[[extractionDataStyleClassProperty]]"
+              extraction-data-text-property="[[extractionDataTextProperty]]"
+              extraction-data-type-property="[[extractionDataTypeProperty]]"
+              extraction-data-width-property="[[extractionDataWidthProperty]]"
+              extraction-name-property="[[extractionNameProperty]]"
+              new-tab="[[newTab]]"
+              show-provenances="{{showProvenances}}">
+            </single-result>
+          </template>
+        </iron-collapse>
       </template>
     </template>
   </template>
@@ -493,6 +505,21 @@ A Polymer Element showing a list of compressed single-result elements.
       },
 
       /**
+       * Whether the collapsible details are opened.
+       *
+       * @type {Boolean}
+       * @default false
+       *
+       */
+      open: {
+        notify: true,
+        readOnly: false,
+        reflectToAttribute: true,
+        type: Boolean,
+        value: false
+      },
+
+      /**
        * (Optional|Output)
        *
        * The current page.
@@ -744,6 +771,28 @@ A Polymer Element showing a list of compressed single-result elements.
         collection[extraction[idProperty]]
         ? collection[extraction[idProperty]][property]
         : undefined;
+    },
+
+    /**
+     * Expands or collapses the result details if its item has any details and the event was not triggered by clicking on a button.
+     *
+     * @event tap
+     */
+    toggleDetails(event) {
+      var t_extractiondata = event.target.dataset.t_extractiondata;
+
+      if (t_extractiondata && t_extractiondata.length) {
+        console.log('1', this);
+        if (event.target.getAttribute('isopen') === 'true') {
+          console.log('2');
+          this.set('open', false);
+          event.target.setAttribute('isopen', 'false');
+        } else {
+          console.log('3');
+          event.target.setAttribute('isopen', 'true');
+          this.set('open', true);
+        }
+      }
     }
   });
 })();
