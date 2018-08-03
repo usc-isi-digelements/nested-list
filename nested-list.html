@@ -99,6 +99,17 @@ A Polymer Element showing a list of compressed single-result elements.
               text="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, textProperty)]]"
               type="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, typeProperty)]]"
               header-extractions="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, headerExtractionsProperty)]]"
+              details="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, detailsProperty)]]"
+              detail-highlighted-text-property="[[detailHighlightedTextProperty]]"
+              detail-link-property="[[detailLinkProperty]]"
+              detail-name-property="[[detailNameProperty]]"
+              detail-text-property="[[detailTextProperty]]"
+              detail-extractions="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, detailExtractionsProperty)]]"
+              images="[[_getPropertyFromCollection(_queryResults, extraction, extractionDataIdProperty, imagesProperty)]]"
+              image-link-property="[[imageLinkProperty]]"
+              image-source-property="[[imageSourceProperty]]"
+              small-image-style-class="[[smallImageStyleClass]]"
+              large-image-style-class="[[largeImageStyleClass]]"
               hide-cached-page="[[hideCachedPage]]"
               hide-confidences="[[hideConfidences]]"
               extraction-data-property="[[extractionDataProperty]]"
@@ -405,6 +416,149 @@ A Polymer Element showing a list of compressed single-result elements.
       headerExtractionsProperty: {
         type: String,
         value: 'headerExtractions'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The details property in the result objects that is a list of extraction objects to show in the result header.
+       *
+       * @type {String}
+       * @default 'details'
+       */
+      detailsProperty: {
+        type: String,
+        value: 'details'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The detail extractions property in the result objects that is a list of extraction objects to show in the result header.
+       *
+       * @type {String}
+       * @default 'detailExtractions'
+       */
+      detailExtractionsProperty: {
+        type: String,
+        value: 'detailExtractions'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The highlighted text property in the detail objects.
+       *
+       * @type {String}
+       * @default 'highlightedText'
+       */
+      detailHighlightedTextProperty: {
+        type: String,
+        value: 'highlightedText'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The link property in the detail objects.
+       *
+       * @type {String}
+       * @default 'link'
+       */
+      detailLinkProperty: {
+        type: String,
+        value: 'link'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The name property in the detail objects.
+       *
+       * @type {String}
+       * @default 'name'
+       */
+      detailNameProperty: {
+        type: String,
+        value: 'name'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The text property in the detail objects.
+       *
+       * @type {String}
+       * @default 'text'
+       */
+      detailTextProperty: {
+        type: String,
+        value: 'text'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The images property in the result objects that is a list of image objects.
+       *
+       * @type {String}
+       * @default 'images'
+       */
+      imagesProperty: {
+        type: String,
+        value: 'images'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The link property in the image objects.
+       *
+       * @type {String}
+       * @default 'link'
+       */
+      imageLinkProperty: {
+        type: String,
+        value: 'link'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The source property in the image objects.
+       *
+       * @type {String}
+       * @default 'source'
+       */
+      imageSourceProperty: {
+        type: String,
+        value: 'source'
+      },
+
+      /**
+       * (Optional)
+       *
+       * The style class for all the images in the gallery.
+       *
+       * @type {String}
+       * @default ''
+       */
+      smallImageStyleClass: {
+        type: String,
+        value: ''
+      },
+
+      /**
+       * (Optional)
+       *
+       * The style class for any image in a popup.
+       *
+       * @type {String}
+       * @default ''
+       */
+      largeImageStyleClass: {
+        type: String,
+        value: ''
       },
 
       /**
