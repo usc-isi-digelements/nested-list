@@ -53,6 +53,7 @@ A Polymer Element showing a list of compressed single-result elements.
     </style>
 
     <template is="dom-if" if="[[_queryTerms.length]]">
+      <hr>
       <build-and-run-query
         type="terms"
         fields="[[idField]]"
@@ -74,7 +75,6 @@ A Polymer Element showing a list of compressed single-result elements.
       </build-and-run-query>
 
       <div class="layout horizontal flex">
-        <hr>
         <div class="header layout vertical flex">[[_createHeader(extractionName, _queryResults.length, _totalResults, loading)]]</div>
 
         <modal-icon
