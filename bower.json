@@ -2,7 +2,7 @@
   "name": "nested-list",
   "description":
     "A Polymer Element showing a list of compressed single-result elements.",
-  "version": "2.3.9",
+  "version": "2.3.10",
   "authors": ["Next Century Corporation"],
   "license": "Apache-2.0",
   "keywords": ["web-component", "polymer"],
