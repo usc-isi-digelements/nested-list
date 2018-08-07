@@ -78,7 +78,7 @@ A Polymer Element showing a list of compressed single-result elements.
 
         <modal-icon
           data-t_extractiondata$="[[extractionData]]"
-          isopen$="true"
+          isopen$=""
           openable
           open="{{open}}"
           on-click="toggleDetails">
@@ -944,14 +944,14 @@ A Polymer Element showing a list of compressed single-result elements.
 
       if (t_extractiondata && t_extractiondata.length) {
         console.log('1', this);
-        if (event.target.getAttribute('isopen') === 'true') {
-          console.log('2');
-          this.set('open', false);
-          event.target.setAttribute('isopen', 'false');
-        } else {
-          console.log('3');
+        if (event.target.getAttribute('isopen') === 'false') {
+          console.log('curr close, set as open');
           event.target.setAttribute('isopen', 'true');
           this.set('open', true);
+        } else {
+          console.log('curr open, set as close');
+          this.set('open', false);
+          event.target.setAttribute('isopen', 'false');
         }
       }
     }
