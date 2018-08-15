@@ -15,7 +15,6 @@
     "paper-styles": "PolymerElements/paper-styles#^2.0.0",
     "single-result": "usc-isi-digelements/single-result#^2.5.3",
     "iron-collapse": "PolymerElements/iron-collapse#^2.0.0",
-    "modal-icon": "usc-isi-digelements/modal-icon#^2.1.0",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
     "paper-material": "PolymerElements/paper-material#^2.0.0"
   },
