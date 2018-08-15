@@ -14,7 +14,7 @@
     "build-and-run-query": "usc-isi-digelements/build-and-run-query#^2.5.1",
     "paper-styles": "PolymerElements/paper-styles#^2.0.0",
     "single-result":
-      "usc-isi-digelements/single-result#66c0e92cf68fc77af92ca967ffe0b0a67da597cc",
+      "usc-isi-digelements/single-result#771e92e238cfc0e801953acb82659a1ab54aa7d3",
     "iron-collapse": "PolymerElements/iron-collapse#^2.0.0",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
     "paper-material": "PolymerElements/paper-material#^2.0.0"
