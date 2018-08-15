@@ -121,7 +121,7 @@ A Polymer Element showing a list of compressed single-result elements.
               extraction-data-width-property="[[extractionDataWidthProperty]]"
               extraction-name-property="[[extractionNameProperty]]"
               new-tab="[[newTab]]"
-              nested-object="true"
+              nested-object=[[nestedObject]]
               show-provenances="{{showProvenances}}">
             </single-result>
           </template>
@@ -207,6 +207,18 @@ A Polymer Element showing a list of compressed single-result elements.
         value: function() {
           return [];
         }
+      },
+
+      /**
+       * (Required)
+       *
+       *
+       * @type {Boolean}
+       * @default false
+       */
+      nestedObject: {
+        type: Boolean,
+        value: true
       },
 
       /**
