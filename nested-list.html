@@ -51,8 +51,8 @@ A Polymer Element showing a list of compressed single-result elements.
         background-color: white;
         margin-left: 15px;
         margin-right: 15px;
-        margin-bottom: 10px;
       }
+
 
       single-result:not(:first-of-type) {
         border-top-style: solid;
@@ -85,8 +85,7 @@ A Polymer Element showing a list of compressed single-result elements.
       <div
         class="layout horizontal flex"
         isopen$=""
-        on-click="toggleDetails"
-        data-t_extractiondata$="[[extractionData]]"
+        on-tap="toggleDetails"
         >
         <div class="header layout vertical flex">[[_createHeader(extractionName, _queryResults.length, _totalResults, loading)]]</div>
 
@@ -999,42 +998,16 @@ A Polymer Element showing a list of compressed single-result elements.
     /**
      * Expands or collapses the result details if its item has any details and the event was not triggered by clicking on a button.
      *
-     * @event click
+     * @event tap
      */
     toggleDetails: function(event) {
-      console.log(event);
-      var isButton = event.target.localName === 'paper-button';
-      var isButtonLink =
-        event.target.parentElement &&
-        event.target.parentElement.localName === 'icon-button';
-      var isLink =
-        event.path[0].tagName === 'A' ||
-        (event.target.parentElement &&
-          event.target.parentElement.localName === 'a');
-      // Do not open the result if the user clicked on a button or link inside the result (including the annotation).
-      if (!isButton && !isButtonLink && !isLink) {
-        if (
-          event.target.getAttribute('isopen') === 'true' ||
-          event.target.getAttribute('isopen') === ''
-        ) {
-          this.set('open', false);
-          event.target.setAttribute('isopen', 'false');
-        } else {
-          event.target.setAttribute('isopen', 'true');
-          this.set('open', true);
-        }
+      if (event.target.getAttribute('isopen') === 'false') {
+        this.set('open', true);
+        event.target.setAttribute('isopen', 'true');
+      } else {
+        event.target.setAttribute('isopen', 'false');
+        this.set('open', false);
       }
-      // var t_extractiondata = event.target.dataset.t_extractiondata;
-      //
-      // if (t_extractiondata && t_extractiondata.length) {
-      //   if (event.target.getAttribute('isopen') === 'false') {
-      //     event.target.setAttribute('isopen', 'true');
-      //     this.set('open', true);
-      //   } else {
-      //     this.set('open', false);
-      //     event.target.setAttribute('isopen', 'false');
-      //   }
-      // }
     }
   });
 })();

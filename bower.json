@@ -2,7 +2,7 @@
   "name": "nested-list",
   "description":
     "A Polymer Element showing a list of compressed single-result elements.",
-  "version": "2.3.11",
+  "version": "2.3.12",
   "authors": ["Next Century Corporation"],
   "license": "Apache-2.0",
   "keywords": ["web-component", "polymer"],
@@ -13,8 +13,7 @@
     "polymer": "Polymer/polymer#^2.0.2",
     "build-and-run-query": "usc-isi-digelements/build-and-run-query#^2.5.1",
     "paper-styles": "PolymerElements/paper-styles#^2.0.0",
-    "single-result":
-      "usc-isi-digelements/single-result#ccaff3290b63a8e18ab425f6228ca0d24f5ae5a4",
+    "single-result": "usc-isi-digelements/single-result#^2.5.9",
     "iron-collapse": "PolymerElements/iron-collapse#^2.0.0",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
     "paper-material": "PolymerElements/paper-material#^2.0.0"
